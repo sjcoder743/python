@@ -1,11 +1,11 @@
-
+# SJF CPU Scheduling Algorithm Simulation (Non-Preemptive)
 
 def find_turnaround_time(processes, n, bt, wt, tat):
     # Calculate Turnaround Time
     for i in range(n):
         tat[i] = bt[i] + wt[i]
 
-def find_waiting_time(processes, n, bt, wt):
+def find_waiting_time(n, bt, wt):
     # Calculate Waiting Time
     wt[0] = 0  # First process has no waiting time
 
@@ -16,12 +16,13 @@ def find_average_time(processes, n, bt):
     wt = [0] * n
     tat = [0] * n
 
-    # Sort processes by burst time (SJF)
-    processes, bt = zip(*sorted(zip(processes, bt), key=lambda x: x[1]))
+    # Sort processes by burst time (SJF Non-Preemptive)
+    sorted_processes = sorted(zip(processes, bt), key=lambda x: x[1])
+    sorted_p, sorted_bt = zip(*sorted_processes)  # Unpack sorted tuples
 
     # Find Waiting Time and Turnaround Time
-    find_waiting_time(processes, n, bt, wt)
-    find_turnaround_time(processes, n, bt, wt, tat)
+    find_waiting_time(n, sorted_bt, wt)
+    find_turnaround_time(sorted_p, n, sorted_bt, wt, tat)
 
     total_wt = sum(wt)
     total_tat = sum(tat)
@@ -32,9 +33,9 @@ def find_average_time(processes, n, bt):
 
     print("Process | Burst Time | Waiting Time | Turnaround Time")
     for i in range(n):
-        print(f"  {processes[i]}    |     {bt[i]}     |      {wt[i]}     |      {tat[i]}")
+        print(f"  {sorted_p[i]}    |     {sorted_bt[i]}     |      {wt[i]}     |      {tat[i]}")
 
-    print(f"\n Average Waiting Time: {avg_wt:.2f}")
+    print(f"\nAverage Waiting Time: {avg_wt:.2f}")
     print(f"Average Turnaround Time: {avg_tat:.2f}")
 
 if __name__ == "__main__":
